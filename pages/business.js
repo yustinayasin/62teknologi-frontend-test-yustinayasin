@@ -3,6 +3,15 @@ import Filter from "@/components/Filter";
 import { useEffect, useState } from "react";
 
 export default function Business() {
+  const [listBusiness, setListBusiness] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:4000/yelp-data")
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((err) => console.error(err));
+  }, []);
+
   return (
     <main className="grid grid-cols-4 grid-rows-10 gap-4 h-screen">
       <section className="col-span-1 row-span-10 bg-gray-100 p-8">
