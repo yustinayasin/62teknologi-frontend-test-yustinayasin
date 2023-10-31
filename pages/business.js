@@ -2,8 +2,37 @@ import Card from "@/components/Card";
 import Filter from "@/components/Filter";
 import { useEffect, useState } from "react";
 
+import Link from "next/link";
+
+import {
+  sliceStartAtom,
+  sliceEndAtom,
+  currentPageAtom,
+} from "../storage/atoms";
+import { useAtom } from "jotai";
+
 export default function Business() {
   const [listBusiness, setListBusiness] = useState([]);
+  const [disablePrevious, setDisablePrevious] = useState(true);
+  const [disableNext, setDisableNext] = useState(true);
+
+  // using the global state from Jotai for setting our slice values
+  const [currentSliceStart, setCurrentSliceStart] = useAtom(sliceStartAtom);
+  const [currentSliceEnd, setCurrentSliceEnd] = useAtom(sliceEndAtom);
+  const [currentPage, setCurrentPage] = useAtom(currentPageAtom);
+
+  // the number that is added to the states specifies how many posts are displayed per page
+  const nextPage = () => {
+    setCurrentSliceStart(currentSliceStart + 9);
+    setCurrentSliceEnd(currentSliceEnd + 9);
+    setCurrentPage(currentPage + 1);
+  };
+
+  const previousPage = () => {
+    setCurrentSliceStart(currentSliceStart - 9);
+    setCurrentSliceEnd(currentSliceEnd - 9);
+    setCurrentPage(currentPage - 1);
+  };
 
   useEffect(() => {
     fetch("http://localhost:4000/yelp-data")
@@ -13,6 +42,10 @@ export default function Business() {
       })
       .catch((err) => console.error(err));
   }, []);
+
+  useEffect(() => {
+    console.log(currentSliceStart);
+  }, [currentSliceStart]);
 
   // useEffect(() => {
   //   console.log(listBusiness);
@@ -36,19 +69,34 @@ export default function Business() {
         </section>
 
         <section className="list-business col-span-3 row-span-7 grid grid-cols-3 grid-rows-3 gap-4">
-          {listBusiness?.slice(0, 8).map((business, key) => {
-            return <Card key={key} business={business} />;
-          })}
+          {listBusiness
+            ?.slice(currentSliceStart, currentSliceEnd)
+            .map((business, key) => {
+              return <Card key={key} business={business} />;
+            })}
         </section>
 
         <section className="pagination col-span-3 row-span-2 p-2 place-self-center">
           <div className="join">
-            <button className="join-item btn">«</button>
-            <button className="join-item btn">1</button>
-            <button className="join-item btn btn-active">2</button>
-            <button className="join-item btn">3</button>
-            <button className="join-item btn">4</button>
-            <button className="join-item btn">»</button>
+            <button
+              className={`join-item btn ${
+                currentSliceStart < 9 &&
+                "pointer-events-none bg-slate-400 border-slate-400 text-slate-300"
+              }`}
+              onClick={previousPage}
+            >
+              previous
+            </button>
+            <button className="join-item btn">{currentPage}</button>
+            <button
+              className={`join-item btn ${
+                currentSliceEnd > listBusiness.length &&
+                "pointer-events-none bg-slate-400 border-slate-400 text-slate-300"
+              }`}
+              onClick={nextPage}
+            >
+              next
+            </button>
           </div>
         </section>
       </section>
