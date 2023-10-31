@@ -1,21 +1,31 @@
-export default function Card() {
+export default function Card({ business }) {
   return (
     <div className="card bg-base-100 shadow-xl">
-      <figure>
-        <img
-          src="/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
-          alt="Shoes"
-        />
+      <figure className="h-48">
+        <img src={business.image_url} alt="Business Image" />
       </figure>
       <div className="card-body">
         <h2 className="card-title">
-          Shoes!
-          <div className="badge badge-secondary">NEW</div>
+          {business.name}
+          {/* <div className="badge badge-secondary">NEW</div> */}
         </h2>
-        <p>If a dog chews shoes whose shoes does he choose?</p>
-        <div className="card-actions justify-end">
-          <div className="badge badge-outline">Fashion</div>
-          <div className="badge badge-outline">Products</div>
+        <p>
+          {business.categories.map((value, key) => {
+            if (key != business.categories.length - 1) {
+              return <span key={key}>{value.title + " | "}</span>;
+            } else {
+              return <span key={key}>{value.title}</span>;
+            }
+          })}
+        </p>
+        <div className="card-actions justify-end mt-5">
+          <div className="badge badge-outline">{business.rating} ⭐️</div>
+          <div className="badge badge-outline">
+            {(business.distance / 1000).toFixed(1)} km
+          </div>
+          <div className="badge badge-outline">
+            {business.is_closed ? "Closed" : "Open"}
+          </div>
         </div>
       </div>
     </div>

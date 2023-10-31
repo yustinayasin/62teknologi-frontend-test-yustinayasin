@@ -8,9 +8,15 @@ export default function Business() {
   useEffect(() => {
     fetch("http://localhost:4000/yelp-data")
       .then((response) => response.json())
-      .then((data) => console.log(data))
+      .then((data) => {
+        setListBusiness(data.businesses);
+      })
       .catch((err) => console.error(err));
   }, []);
+
+  // useEffect(() => {
+  //   console.log(listBusiness);
+  // }, [listBusiness]);
 
   return (
     <main className="grid grid-cols-4 grid-rows-10 gap-4 h-screen">
@@ -30,7 +36,9 @@ export default function Business() {
         </section>
 
         <section className="list-business col-span-3 row-span-7 grid grid-cols-3 grid-rows-3 gap-4">
-          <Card />
+          {listBusiness?.slice(0, 8).map((business, key) => {
+            return <Card key={key} business={business} />;
+          })}
         </section>
 
         <section className="pagination col-span-3 row-span-2 p-2 place-self-center">
