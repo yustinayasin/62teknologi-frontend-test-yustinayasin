@@ -13,8 +13,7 @@ import { useAtom } from "jotai";
 
 export default function Business() {
   const [listBusiness, setListBusiness] = useState([]);
-  const [disablePrevious, setDisablePrevious] = useState(true);
-  const [disableNext, setDisableNext] = useState(true);
+  const [search, setSearch] = useState("");
 
   // using the global state from Jotai for setting our slice values
   const [currentSliceStart, setCurrentSliceStart] = useAtom(sliceStartAtom);
@@ -35,21 +34,17 @@ export default function Business() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:4000/yelp-data")
+    fetch(`http://localhost:4000/yelp-data?term=${encodeURIComponent(search)}`)
       .then((response) => response.json())
       .then((data) => {
         setListBusiness(data.businesses);
       })
       .catch((err) => console.error(err));
-  }, []);
+  }, [search]);
 
-  useEffect(() => {
-    console.log(currentSliceStart);
-  }, [currentSliceStart]);
-
-  // useEffect(() => {
-  //   console.log(listBusiness);
-  // }, [listBusiness]);
+  const handleChange = (e) => {
+    setSearch(e.target.value);
+  };
 
   return (
     <main className="grid grid-cols-4 grid-rows-10 gap-4 h-screen">
@@ -64,6 +59,7 @@ export default function Business() {
               type="text"
               placeholder="Search here"
               className="input input-bordered w-full max-w-xs"
+              onChange={handleChange}
             />
           </div>
         </section>
