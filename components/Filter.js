@@ -1,21 +1,15 @@
-export default function Filter() {
+export default function Filter({ category, onCheckboxChange }) {
   return (
-    <section>
-      <h1 className="title text-black text-xl">Food</h1>
-      <section>
-        <div className="form-control">
-          <label className="label cursor-pointer justify-start">
-            <input type="checkbox" checked="checked" className="checkbox" />
-            <span className="label-text mx-3">Coffee and Tea</span>
-          </label>
-        </div>
-        <div className="form-control">
-          <label className="label cursor-pointer justify-start">
-            <input type="checkbox" checked={false} className="checkbox" />
-            <span className="label-text mx-3">Breakfast</span>
-          </label>
-        </div>
-      </section>
-    </section>
+    <div className="form-control">
+      <label className="label cursor-pointer justify-start">
+        <input
+          type="checkbox"
+          className="checkbox"
+          value={category}
+          onChange={() => onCheckboxChange(category)}
+        />
+        <span className="label-text mx-3 text-slate-700">{category}</span>
+      </label>
+    </div>
   );
 }

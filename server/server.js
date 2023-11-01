@@ -15,18 +15,20 @@ app.use(express.json());
 app.get("/yelp-data", async (req, res) => {
   try {
     const location = req.query.location || "New York";
-    const categories = req.query.categories || "";
+    const categories = Array.isArray(req.query.categories)
+      ? req.query.categories.join("&categories=")
+      : req.query.categories || "";
     const sort_by = req.query.sort_by || "best_match";
     const limit = req.query.limit || 20;
     const term = req.query.limit || "";
 
+    console.log(categories);
+
     const url = `https://api.yelp.com/v3/businesses/search?location=${encodeURIComponent(
       location
-    )}&categories=${encodeURIComponent(
-      categories
-    )}&sort_by=${encodeURIComponent(sort_by)}&limit=${encodeURIComponent(
-      limit
-    )}&tem=${encodeURIComponent(term)}`;
+    )}&categories=${categories}&sort_by=${encodeURIComponent(
+      sort_by
+    )}&limit=${encodeURIComponent(limit)}&tem=${encodeURIComponent(term)}`;
 
     const response = await fetch(url, {
       headers: {
