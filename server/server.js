@@ -45,6 +45,50 @@ app.get("/yelp-data", async (req, res) => {
   }
 });
 
+app.get("/business-detail", async (req, res) => {
+  try {
+    const id = req.query.id || "";
+    console.log(id);
+
+    const url = `https://api.yelp.com/v3/businesses/${id}`;
+
+    const response = await fetch(url, {
+      headers: {
+        accept: "application/json",
+        Authorization: "Bearer " + apiKey, // Replace with your Yelp API key
+      },
+    });
+
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.get("/business-reviews", async (req, res) => {
+  try {
+    const id = req.query.id || "";
+    console.log(id);
+
+    const url = `https://api.yelp.com/v3/businesses/${id}/reviews`;
+
+    const response = await fetch(url, {
+      headers: {
+        accept: "application/json",
+        Authorization: "Bearer " + apiKey, // Replace with your Yelp API key
+      },
+    });
+
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 const server = app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

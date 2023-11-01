@@ -56,7 +56,6 @@ export default function Business() {
     fetch(`http://localhost:4000/yelp-data?categories=${selectedCategories}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.businesses);
         setListBusiness(data.businesses);
       })
       .catch((err) => console.error(err));
@@ -122,7 +121,11 @@ export default function Business() {
           {listBusiness
             ?.slice(currentSliceStart, currentSliceEnd)
             .map((business, key) => {
-              return <Card key={key} business={business} />;
+              return (
+                <Link href={`/businesses/${business.id}`} key={key}>
+                  <Card business={business} />
+                </Link>
+              );
             })}
         </section>
 
