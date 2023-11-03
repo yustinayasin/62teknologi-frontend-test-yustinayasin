@@ -1,5 +1,8 @@
 import React from "react";
 import { GoogleMap, LoadScript } from "@react-google-maps/api";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const Maps = ({ lat, long }) => {
   const containerStyle = {
@@ -8,15 +11,12 @@ const Maps = ({ lat, long }) => {
   };
 
   const center = {
-    lat: -3.745,
-    long: -38.523,
+    lat: lat,
+    long: long,
   };
 
-  //console.log(process.env);
-
-  const apiKey = process.env.MAPS_API_KEY;
-
-  //console.log(apiKey);
+  const apiKey =
+    process.env.MAPS_API_KEY || "AIzaSyCcax5Kk1c3hCkvEdO5V8cJ1FIeeuVmWS0";
 
   return (
     <LoadScript googleMapsApiKey={apiKey}>
