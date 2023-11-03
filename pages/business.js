@@ -34,6 +34,7 @@ export default function Business() {
     setCurrentPage(currentPage - 1);
   };
 
+  //hooks for entry data
   useEffect(() => {
     fetch(`http://localhost:4000/yelp-data`)
       .then((response) => response.json())
@@ -43,6 +44,7 @@ export default function Business() {
       .catch((err) => console.error(err));
   }, []);
 
+  //hooks for search
   useEffect(() => {
     fetch(`http://localhost:4000/yelp-data?term=${encodeURIComponent(search)}`)
       .then((response) => response.json())
@@ -52,6 +54,7 @@ export default function Business() {
       .catch((err) => console.error(err));
   }, [search]);
 
+  //hooks for filter categories
   useEffect(() => {
     fetch(`http://localhost:4000/yelp-data?categories=${selectedCategories}`)
       .then((response) => response.json())
@@ -77,6 +80,7 @@ export default function Business() {
 
   return (
     <main className="grid grid-cols-4 grid-rows-10 gap-4 h-screen">
+      {/* FILTER SECTION*/}
       <section className="col-span-1 row-span-10 bg-gray-100 p-8">
         <section>
           <h1 className="title text-slate-800 text-xl mb-4">Food</h1>
@@ -105,6 +109,7 @@ export default function Business() {
         </section>
       </section>
 
+      {/* SEARCH SECTION*/}
       <section className="content col-span-3 row-span-10 bg-gray-200 p-8 relative grid grid-cols-2 grid-rows-9 gap-4">
         <section className="search col-span-3 row-span-1 bg-gray-300 p-2 rounded-xl">
           <div className="form-control w-full max-w-xs place-self-end">
@@ -117,6 +122,7 @@ export default function Business() {
           </div>
         </section>
 
+        {/* MAIN CONTENT BUSINESS SECTION*/}
         <section className="list-business col-span-3 row-span-7 grid grid-cols-3 grid-rows-3 gap-4">
           {listBusiness
             ?.slice(currentSliceStart, currentSliceEnd)
@@ -129,6 +135,7 @@ export default function Business() {
             })}
         </section>
 
+        {/* PAGINATION SECTION*/}
         <section className="pagination col-span-3 row-span-2 p-2 place-self-center">
           <div className="join">
             <button
